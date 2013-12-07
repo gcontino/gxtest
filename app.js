@@ -85,7 +85,7 @@ Ext.application({
         });
 
         mappanel2 = Ext.create('GeoExt.panel.Map', {
-            title: 'The GeoExt.panel.Map-class-2',
+            title: '999The GeoExt.panel.Map-class-2',
             map: map2,
             center: '1560550,5236894',
             zoom: 6,
