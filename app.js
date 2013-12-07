@@ -4,12 +4,16 @@ Ext.require([
     'Ext.state.CookieProvider',
     'Ext.window.MessageBox',
     'Ext.tab.Panel',
-    'GeoExt.panel.Map'
+    'GeoExt.panel.Map',
+    'GeoExt.window.Popup'
 ]);
 
 Ext.application({
     name: 'GeoExt Test',
     launch: function() {
+
+    // carico il proxy che serve per la request GetFeatureInfo a Geoserver
+    OpenLayers.ProxyHost="proxy.php?url=";
 
     //definisco le basi OpenStreetMap Tiled
     basi1=[new OpenLayers.Layer.XYZ("MapQuest OSM",
@@ -31,11 +35,11 @@ Ext.application({
     basi3=[basi1[0].clone(),basi1[1].clone(),basi1[2].clone()];
 
     var oggi = new OpenLayers.Layer.WMS(
-        "Bollettino Oggi",
-        "http://geoavalanche.org:80/geoserver/geonode/wms",
-        {layers: 'geonode:bollettino_oggi',
-        styles: 'bollettino_oggi_4e521565',
-        transparent: true});
+            "Bollettino Oggi",
+            "http://geoavalanche.org:80/geoserver/geonode/wms",
+            {layers: 'geonode:bollettino_oggi',
+                styles: 'bollettino_oggi_4e521565',
+                transparent: true});
 
     var domani = new OpenLayers.Layer.WMS(
         "Bollettino Domani",
@@ -63,11 +67,16 @@ Ext.application({
     map2.addLayer(domani);
     map3.addLayer(dopodomani);
 
+    //attivo il controller per GetFeatureInfo per le tre mappe, definito in getinfo.js
+    AttivaControlloGetInfo(map1);
+    AttivaControlloGetInfo(map2);
+    AttivaControlloGetInfo(map3);
+
     var mappanel1 = Ext.create('GeoExt.panel.Map', {
         title: 'Previsioni Oggi',
         map: map1,
         center: '1560550,5236894',
-        zoom: 5,
+        zoom: 6,
         dockedItems: [{
             xtype: 'toolbar',
             dock: 'top',
@@ -85,7 +94,7 @@ Ext.application({
         title: 'Previsioni Domani',
         map: map2,
         center: '1560550,5236894',
-        zoom: 5,
+        zoom: 6,
         dockedItems: [{
             xtype: 'toolbar',
             dock: 'top',
@@ -103,7 +112,7 @@ Ext.application({
         title: 'Previsioni Domani',
         map: map3,
         center: '1560550,5236894',
-        zoom: 5,
+        zoom: 6,
         dockedItems: [
             {
                 xtype: 'toolbar',
@@ -123,7 +132,7 @@ Ext.application({
 
     Ext.create('Ext.tab.Panel', {
         renderTo: document.body,
-        height: '600px',
+        height: window.innerHeight,
         items: [ mappanel1,mappanel2,mappanel3]
     });
 
