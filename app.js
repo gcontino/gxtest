@@ -4,38 +4,74 @@ Ext.require([
     'Ext.state.CookieProvider',
     'Ext.window.MessageBox',
     'Ext.tab.Panel',
-	'GeoExt.panel.Map'
+    'GeoExt.panel.Map'
 ]);
 
 Ext.application({
-    name: 'HelloGeoExt2',
+    name: 'GeoExt Test',
     launch: function() {
 
+        /*var basi=new Array();
+         basi=[new OpenLayers.Layer.XYZ("MapQuest OSM",
+         ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
+         "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
+         "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
+         "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"],
+         new OpenLayers.Layer.XYZ("Imagery",
+         ["http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png",
+         "http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png",
+         "http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png",
+         "http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png"]),
+         new OpenLayers.Layer.XYZ("OpenStreetMap",
+         ["http://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
+         "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
+         "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png",
+         "http://d.tile.openstreetmap.org/${z}/${x}/${y}.png"])];*/
 
-        var map = new OpenLayers.Map({});
-        var map2 = new OpenLayers.Map({});
+        base=new OpenLayers.Layer.XYZ("MapQuest OSM",
+            ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
+                "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
+                "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
+                "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"]);
 
-        var ln = new OpenLayers.Layer.WMS(
-            "Lazio Net",
-            "http://www1.ispesl.it/geoserver/ows?",
-            {layers: 'inailgis:v_lazionetwork'}
+        base1=new OpenLayers.Layer.XYZ("MapQuest OSM",
+            ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
+                "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
+                "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
+                "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"]);
+
+        var map = new OpenLayers.Map({projection: 'EPSG:900913'});
+
+        var oggi = new OpenLayers.Layer.WMS(
+            "Bollettino Oggi",
+            "http://geoavalanche.org:80/geoserver/geonode/wms",
+            {layers: 'geonode:bollettino_oggi',
+                styles: 'bollettino_oggi_4e521565',
+                isBaseLayer: false,
+                transparent: true}
         );
-		
-		var meteo = new OpenLayers.Layer.WMS(
-            "Meteo",
-            "http://www1.ispesl.it/geoserver/ows?",
-            {layers: 'inailgis:v_meteostations'}
+
+        var domani = new OpenLayers.Layer.WMS(
+            "Bollettino Domani",
+            "http://geoavalanche.org:80/geoserver/geonode/wms",
+            {layers: 'geonode:bollettino_domani',
+                styles: 'bollettino_domani_75161015',
+                isBaseLayer: false,
+                transparent: true}
         );
-        
-        map.addLayers([ln]);
-		map2.addLayers([meteo]);
+
+
+        var map2 = new OpenLayers.Map({projection: 'EPSG:900913'});
+
+        map.addLayers([oggi,base]);
+        map2.addLayers([domani,base1]);
 
         mappanel = Ext.create('GeoExt.panel.Map', {
             title: 'The GeoExt.panel.Map-class-1',
             map: map,
-            center: '12,41',
-            zoom: 3,
-			dockedItems: [{
+            center: '1560550,5236894',
+            zoom: 6,
+            dockedItems: [{
                 xtype: 'toolbar',
                 dock: 'top',
                 items: [{
@@ -47,14 +83,12 @@ Ext.application({
                 }]
             }]
         });
-       mappanel2 = Ext.create('GeoExt.panel.Map', {
+
+        mappanel2 = Ext.create('GeoExt.panel.Map', {
             title: 'The GeoExt.panel.Map-class-2',
             map: map2,
-            center: '12.5,41.8',
-            zoom: 3,
-            stateful: true,
-            stateId: 'mappanel2',
-
+            center: '1560550,5236894',
+            zoom: 6,
             dockedItems: [{
                 xtype: 'toolbar',
                 dock: 'top',
@@ -67,19 +101,20 @@ Ext.application({
                 }]
             }]
         })
+
         /*view = Ext.create('Ext.container.Viewport', {
-			layout: 'fit',
-            items: [
-                mappanel
-            ]
-        });*/
+         layout: 'fit',
+         items: [
+         mappanel
+         ]
+         });*/
 
 
-		Ext.create('Ext.tab.Panel', {
-			renderTo: document.body,
+        Ext.create('Ext.tab.Panel', {
+            renderTo: document.body,
             height: '600px',
-			items: [ mappanel,mappanel2]
-		});
-		
+            items: [ mappanel,mappanel2]
+        });
+
     }
 });
