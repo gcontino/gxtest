@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Trying out GeoExt2</title>
+        <!-- Load the ExtJS stylesheet -->
+        <link rel="stylesheet" type="text/css"
+          href="http://cdn.sencha.com/ext/gpl/4.2.1/resources/css/ext-all.css">
+        <!-- Load ExtJS from their CDN, local versions work also -->
+        <script type="text/javascript"
+          src="http://cdn.sencha.com/ext/gpl/4.2.1/ext-debug.js"></script>
+        <!-- Load OpenLayers, custom builds may even be better -->
+        <script src="http://openlayers.org/api/2.13.1/OpenLayers.js"></script>
+        <!--script type="text/javascript" src="../loader.js"></script-->
+		<script type="text/javascript">
+		Ext.Loader.setConfig({
+			enabled: true,
+			disableCaching: false,
+			paths: {
+				GeoExt: "geoext2/src/GeoExt",
+				Ext: "http://cdn.sencha.com/ext/gpl/4.2.1/src"
+			}
+		});
+		</script>
+        <script type="text/javascript" src="app.js"></script>
+		
+	</head>
+    <body></body>
+</html>
