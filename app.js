@@ -11,7 +11,8 @@ Ext.application({
     name: 'GeoExt Test',
     launch: function() {
 
-    basi=[new OpenLayers.Layer.XYZ("MapQuest OSM",
+    //definisco le basi OpenStreetMap Tiled
+    basi1=[new OpenLayers.Layer.XYZ("MapQuest OSM",
          ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
          "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
          "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
@@ -26,31 +27,14 @@ Ext.application({
          "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
          "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png",
          "http://d.tile.openstreetmap.org/${z}/${x}/${y}.png"])];
-
-    base1=new OpenLayers.Layer.XYZ("MapQuest OSM",
-        ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
-        "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
-        "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
-        "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"]);
-
-    base2=new OpenLayers.Layer.XYZ("MapQuest OSM",
-        ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
-        "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
-        "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
-        "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"]);
-
-    base3=new OpenLayers.Layer.XYZ("MapQuest OSM",
-        ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
-        "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
-        "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
-        "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"]);
+    basi2=[basi1[0].clone(),basi1[1].clone(),basi1[2].clone()];
+    basi3=[basi1[0].clone(),basi1[1].clone(),basi1[2].clone()];
 
     var oggi = new OpenLayers.Layer.WMS(
         "Bollettino Oggi",
         "http://geoavalanche.org:80/geoserver/geonode/wms",
         {layers: 'geonode:bollettino_oggi',
         styles: 'bollettino_oggi_4e521565',
-        isBaseLayer: false,
         transparent: true});
 
     var domani = new OpenLayers.Layer.WMS(
@@ -58,7 +42,6 @@ Ext.application({
         "http://geoavalanche.org:80/geoserver/geonode/wms",
         {layers: 'geonode:bollettino_domani',
         styles: 'bollettino_domani_75161015',
-        isBaseLayer: false,
         transparent: true});
 
     var dopodomani = new OpenLayers.Layer.WMS(
@@ -66,20 +49,19 @@ Ext.application({
         "http://geoavalanche.org:80/geoserver/geonode/wms",
         {layers: 'geonode:bollettino_dopodomani',
         styles: 'bollettino_dopodomani_5f6cb4f2',
-        isBaseLayer: false,
         transparent: true});
 
-    var map1 = new OpenLayers.Map({projection: 'EPSG:900913'});
-    var map2 = new OpenLayers.Map({projection: 'EPSG:900913'});
-    var map3 = new OpenLayers.Map({projection: 'EPSG:900913'});
+    var map1 = new OpenLayers.Map({projection: 'EPSG:900913',layers: basi1});
+    var map2 = new OpenLayers.Map({projection: 'EPSG:900913',layers: basi2});
+    var map3 = new OpenLayers.Map({projection: 'EPSG:900913',layers: basi3});
 
     map1.addControl(new OpenLayers.Control.LayerSwitcher());
     map2.addControl(new OpenLayers.Control.LayerSwitcher());
     map3.addControl(new OpenLayers.Control.LayerSwitcher());
 
-    map1.addLayers([oggi,base1]);
-    map2.addLayers([domani,base2]);
-    map3.addLayers([dopodomani,base3]);
+    map1.addLayer(oggi);
+    map2.addLayer(domani);
+    map3.addLayer(dopodomani);
 
     var mappanel1 = Ext.create('GeoExt.panel.Map', {
         title: 'Previsioni Oggi',
