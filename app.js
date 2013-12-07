@@ -72,12 +72,7 @@ Ext.application({
     AttivaControlloGetInfo(map2);
     AttivaControlloGetInfo(map3);
 
-    var laypan1=Ext.create('Ext.panel', {
-        region: 'west',
-        id: 'layerswitcher'
-    });
-
-        var mappanel1 = Ext.create('GeoExt.panel.Map', {
+    var mappanel1 = Ext.create('GeoExt.panel.Map', {
         title: 'Previsioni Oggi',
         map: map1,
         region:'center',
@@ -95,11 +90,6 @@ Ext.application({
             }]
         }]
     });
-
-        var panel1=Ext.create('Ext.panel',{
-            items:[laypan1,mappanel1],
-            layout: 'border'
-        });
 
     var mappanel2 = Ext.create('GeoExt.panel.Map', {
         title: 'Previsioni Domani',
@@ -144,9 +134,8 @@ Ext.application({
     var tab=Ext.create('Ext.tab.Panel', {
         renderTo: document.body,
         height: window.innerHeight,
-        items: [ panel1,mappanel2,mappanel3]
+        items: [ mappanel1,mappanel2,mappanel3]
     });
 
-    console.log(tab);
     }
 });
