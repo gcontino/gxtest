@@ -14,7 +14,7 @@ Ext.application({
 
         var map = new OpenLayers.Map({});
         var map2 = new OpenLayers.Map({});
-        
+
         var ln = new OpenLayers.Layer.WMS(
             "Lazio Net",
             "http://www1.ispesl.it/geoserver/ows?",
@@ -29,14 +29,12 @@ Ext.application({
         
         map.addLayers([ln]);
 		map2.addLayers([meteo]);
-        
+
         mappanel = Ext.create('GeoExt.panel.Map', {
-            title: 'The GeoExt.panel.Map-class',
+            title: 'The GeoExt.panel.Map-class-1',
             map: map,
             center: '12,41',
             zoom: 3,
-            stateful: true,
-            stateId: 'mappanel',
 			dockedItems: [{
                 xtype: 'toolbar',
                 dock: 'top',
@@ -50,7 +48,7 @@ Ext.application({
             }]
         });
        mappanel2 = Ext.create('GeoExt.panel.Map', {
-            title: 'The GeoExt.panel.Map-class',
+            title: 'The GeoExt.panel.Map-class-2',
             map: map2,
             center: '12.5,41.8',
             zoom: 3,
@@ -75,18 +73,12 @@ Ext.application({
                 mappanel
             ]
         });*/
-		
-		
+
+
 		Ext.create('Ext.tab.Panel', {
 			renderTo: document.body,
-			items: [{
-				title: '1',
-				items: mappanel
-					}, {
-				title: '2',
-				items: mappanel2
-				}
-			]
+            height: '600px',
+			items: [ mappanel,mappanel2]
 		});
 		
     }
